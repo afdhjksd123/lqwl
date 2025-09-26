@@ -1,3 +1,4 @@
+cat > /usr/share/nginx/html/index.html << EOF
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -77,171 +78,7 @@
       top: -2px;
       z-index: 1; /* iframe在最底层 */
     }
-    
-    /* 错误提示样式 */
-    .error-message {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      padding: 20px;
-      display: none;
-    }
-    
-    .error-message h3 {
-      color: #f74d75;
-      font-size: 18px;
-      margin-bottom: 10px;
-    }
-    
-    .error-message p {
-      color: #666;
-      font-size: 14px;
-    }
-
-    /* 投诉按钮样式 */
-    .complaint-button {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: #f74d75;
-      color: white;
-      border: none;
-      border-radius: 50px;
-      padding: 12px 20px;
-      font-size: 14px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      z-index: 10000;
-      display: flex;
-      align-items: center;
-      transition: all 0.3s ease;
-    }
-    
-    .complaint-button:hover {
-      background-color: #e53e69;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
-    }
-    
-    .complaint-button i {
-      margin-right: 8px;
-    }
-
-    /* 投诉弹窗样式 */
-    .complaint-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.5);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 10002;
-    }
-    
-    .modal-content {
-      background-color: white;
-      width: 90%;
-      max-width: 500px;
-      border-radius: 10px;
-      padding: 25px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      position: relative;
-      animation: modalFadeIn 0.3s;
-    }
-    
-    @keyframes modalFadeIn {
-      from {opacity: 0; transform: translateY(-30px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
-    
-    .close-modal {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      font-size: 20px;
-      cursor: pointer;
-      color: #666;
-      transition: color 0.2s;
-    }
-    
-    .close-modal:hover {
-      color: #f74d75;
-    }
-    
-    .modal-content h3 {
-      color: #333;
-      margin-top: 0;
-      margin-bottom: 20px;
-      font-size: 18px;
-    }
-    
-    .complaint-form .form-group {
-      margin-bottom: 15px;
-    }
-    
-    .complaint-form label {
-      display: block;
-      margin-bottom: 8px;
-      color: #555;
-      font-size: 14px;
-    }
-    
-    .complaint-form select,
-    .complaint-form textarea {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-size: 14px;
-      box-sizing: border-box;
-    }
-    
-    .complaint-form textarea {
-      min-height: 100px;
-      resize: vertical;
-    }
-    
-    .submit-complaint {
-      background-color: #f74d75;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      padding: 10px 20px;
-      font-size: 14px;
-      cursor: pointer;
-      width: 100%;
-      transition: background-color 0.2s;
-    }
-    
-    .submit-complaint:hover {
-      background-color: #e53e69;
-    }
-    
-    .success-message {
-      display: none;
-      text-align: center;
-      padding: 30px 0;
-    }
-    
-    .success-message i {
-      font-size: 50px;
-      color: #4CAF50;
-      margin-bottom: 15px;
-    }
-    
-    .success-message p {
-      color: #333;
-      font-size: 16px;
-    }
   </style>
-  <!-- 引入Font Awesome图标库 -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
   <!-- 加载动画容器 -->
@@ -250,144 +87,53 @@
     <div class="dot dot-2"></div>
     <div class="dot dot-3"></div>
   </div>
-  
-  <!-- 错误提示 -->
-  <div class="error-message" id="errorMessage">
-    <h3>加载失败</h3>
-    <p id="errorDetails">链接不存在</p>
-  </div>
-
-  <!-- 投诉按钮 -->
-  <button class="complaint-button" id="complaintButton">
-    <i class="fas fa-exclamation-circle"></i> 投诉
-  </button>
-
-  <!-- 投诉弹窗 -->
-  <div class="complaint-modal" id="complaintModal">
-    <div class="modal-content">
-      <span class="close-modal" id="closeModal">&times;</span>
-      
-      <div id="complaintFormContainer">
-        <h3>提交投诉</h3>
-        <form class="complaint-form" id="complaintForm">
-          <div class="form-group">
-            <label for="complaintType">投诉类型</label>
-            <select id="complaintType" required>
-              <option value="">请选择投诉类型</option>
-              <option value="content">内容不当</option>
-              <option value="fraud">涉嫌欺诈</option>
-              <option value="copyright">版权侵权</option>
-              <option value="other">其他问题</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="complaintDescription">投诉详情</label>
-            <textarea id="complaintDescription" placeholder="请详细描述您遇到的问题..." required></textarea>
-          </div>
-          <button type="submit" class="submit-complaint">提交投诉</button>
-        </form>
-      </div>
-      
-      <div class="success-message" id="successMessage">
-        <i class="fas fa-check-circle"></i>
-        <p>投诉已提交</p>
-      </div>
-    </div>
-  </div>
 
   <script>
-    // 处理URL参数，获取key
-    var params = new URLSearchParams(window.location.search);
-    var key = params.get('key');
-    var apiUrl = 'https://fh.qsjie.top/api/keyapi.php'; // 原API地址
-    
-    // 检查是否有有效的key
-    if (key) {
-      // 从API获取密钥对应的编码
-      fetch(apiUrl + '?key=' + encodeURIComponent(key))
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('网络响应不正常');
-          }
-          return response.json();
-        })
-        .then(data => {
-          if (data.success && data.encoded_url) {
-            // 解码URL
-            var decodedUrl = atob(data.encoded_url);
-            
-            // 验证URL有效性
-            if (decodedUrl.includes("http")) {
-              // 隐藏加载动画
-              setTimeout(function() {
-                document.getElementById("container").style.display = "none";
-              }, 1500);
+    // 处理URL参数
+    var liugao = new URLSearchParams(window.location.search);
+    var encodedParam = liugao.get('cuican');
+    var liu = atob(encodedParam);
 
-              // 创建iframe并加载内容
-              var iframe = document.createElement('iframe');
-              iframe.className = 'content';
-              iframe.src = decodedUrl;
-              document.body.appendChild(iframe);
+    // 检查是否有有效的URL
+    if (liu.includes("http")) {
+      var square = document.getElementById("container");
+      setTimeout(function() {
+        square.style.display = "none";
+      }, 1500);
 
-              // 记录点击统计
-              recordLinkClick(key);
+      // 创建iframe并加载内容
+      var iframe = document.createElement('iframe');
+      iframe.className = 'content';
+      iframe.src = liu;
+      document.body.appendChild(iframe);
 
-              // 监听iframe加载完成事件
-              iframe.onload = function() {
-                iframe.contentWindow.postMessage('Hello from parent page', decodedUrl);
-              };
+      // 监听iframe加载完成事件
+      iframe.onload = function() {
+        // 向iframe发送消息
+        iframe.contentWindow.postMessage('Hello from parent page', liu);
+      };
 
-              // 监听来自iframe的消息
-              window.addEventListener('message', function(event) {
-                // 验证消息来源
-                if (event.origin === new URL(decodedUrl).origin) {
-                  console.log('Message received from iframe:', event.data);
-                }
-              });
+      // 监听来自iframe的消息
+      window.addEventListener('message', function(event) {
+        // 验证消息来源
+        if (event.origin === new URL(liu).origin) {
+          console.log('Message received from iframe:', event.data);
+          // 在这里处理来自iframe的消息
+        }
+      });
 
-              console.log('加载URL:', decodedUrl);
-            } else {
-              showError('无效的链接地址');
-            }
-          } else {
-            showError(data.message || '未找到对应的链接');
-          }
-        })
-        .catch(error => {
-          console.error('获取链接失败:', error);
-          showError('获取链接失败: ' + error.message);
-        });
+      console.log(liu);
     } else {
-      showError('禁止滥用');
-    }
-    
-    // 显示错误信息
-    function showError(message) {
+      console.log("nourls");
+      // 如果没有有效URL，隐藏加载动画
       document.getElementById("container").style.display = "none";
-      document.getElementById("errorDetails").textContent = message;
-      document.getElementById("errorMessage").style.display = "block";
     }
-    
-    // 记录链接点击
-    function recordLinkClick(key) {
-      // 调用统计接口
-      fetch('https://fh.qsjie.top/user_api.php?action=record_click&key=' + encodeURIComponent(key))
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            console.log('点击统计已记录');
-          } else {
-            console.warn('统计记录失败:', data.message);
-          }
-        })
-        .catch(error => {
-          console.error('统计接口调用失败:', error);
-        });
-    }
+  </script>
 
-    // 鼠标滚轮事件处理
+  <script>
     var firefox = navigator.userAgent.indexOf('Firefox') != -1;
 
+    // 鼠标滚轮事件处理
     function MouseWheel(e, doc) {
       e.preventDefault && e.preventDefault();
       e.returnValue = false;
@@ -412,81 +158,7 @@
         alert('跨域无法获取iframe加载document' + e);
       }
     }
-
-    // 投诉按钮核心功能（含链接修改）
-    document.addEventListener('DOMContentLoaded', function() {
-      const complaintButton = document.getElementById('complaintButton');
-      const complaintModal = document.getElementById('complaintModal');
-      const closeModal = document.getElementById('closeModal');
-      const complaintForm = document.getElementById('complaintForm');
-      const complaintFormContainer = document.getElementById('complaintFormContainer');
-      const successMessage = document.getElementById('successMessage');
-      
-      // 显示投诉弹窗
-      complaintButton.addEventListener('click', function() {
-        complaintModal.style.display = 'flex';
-        complaintForm.reset();
-        complaintFormContainer.style.display = 'block';
-        successMessage.style.display = 'none';
-      });
-      
-      // 关闭投诉弹窗
-      closeModal.addEventListener('click', function() {
-        complaintModal.style.display = 'none';
-      });
-      complaintModal.addEventListener('click', function(e) {
-        if (e.target === complaintModal) {
-          complaintModal.style.display = 'none';
-        }
-      });
-      
-      // 提交投诉+修改链接
-      complaintForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const complaintType = document.getElementById('complaintType').value;
-        const complaintDescription = document.getElementById('complaintDescription').value;
-
-        // 表单验证
-        if (!complaintType || !complaintDescription.trim()) {
-          alert('请选择投诉类型并填写详情');
-          return;
-        }
-
-        // 调用修改链接接口（需与后端update_link.php地址匹配）
-        fetch('https://fh.qsjie.top/api/czapi.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            key: key,
-            complaintType: complaintType,
-            complaintDescription: complaintDescription
-          })
-        })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            // 显示成功反馈
-            complaintFormContainer.style.display = 'none';
-            successMessage.style.display = 'block';
-            
-            // 3秒后关闭弹窗并刷新页面，加载新链接
-            setTimeout(() => {
-              complaintModal.style.display = 'none';
-              window.location.reload();
-            }, 3000);
-          } else {
-            alert('操作失败：' + (data.message || '请稍后重试'));
-          }
-        })
-        .catch(error => {
-          console.error('接口调用失败:', error);
-          alert('提交失败，请检查网络连接');
-        });
-      });
-    });
   </script>
 </body>
 </html>
+EOF
