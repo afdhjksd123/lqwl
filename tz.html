@@ -9,7 +9,7 @@
   <meta content="320" name="MobileOptimized">
   <title>请在浏览器中打开</title>
   <style>
-    /* 基础样式重置 */
+    /* 基础样式：强制全屏 + 重置 */
     * {
       margin: 0;
       padding: 0;
@@ -19,39 +19,44 @@
 
     body {
       background-color: #ffffff;
-      min-height: 100vh;
+      height: 100vh; /* 强制全屏高度 */
+      width: 100vw;  /* 强制全屏宽度 */
+      overflow: hidden; /* 禁止滚动 */
       padding: 20px;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* 顶部提示栏 */
+    /* 顶部提示栏：突出引导核心 */
     .top-bar {
       background: linear-gradient(135deg, #4a90e2, #5b6ef7);
       color: white;
-      padding: 15px 10px;
+      padding: 18px 15px;
       border-radius: 12px;
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 40px;
       position: relative;
+      flex-shrink: 0;
     }
     
     .top-bar h1 {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 600;
-      margin-bottom: 5px;
+      margin-bottom: 8px;
     }
     
     .device-tags {
       display: flex;
       justify-content: center;
-      gap: 10px;
-      margin-top: 8px;
+      gap: 12px;
+      margin-top: 10px;
     }
     
     .device-tag {
       background-color: rgba(255, 255, 255, 0.2);
-      padding: 3px 10px;
-      border-radius: 12px;
-      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 16px;
+      font-size: 13px;
     }
     
     .guide-arrow {
@@ -60,8 +65,8 @@
       right: 15px;
       transform: translateY(-50%);
       background-color: rgba(255, 255, 255, 0.3);
-      width: 30px;
-      height: 30px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -70,27 +75,32 @@
     
     .guide-arrow i {
       color: white;
-      font-size: 16px;
+      font-size: 18px;
     }
 
-    /* 主要内容区 */
+    /* 主要内容区：居中布局 */
     .content {
       text-align: center;
-      margin-bottom: 40px;
+      margin-bottom: 50px;
+      flex-grow: 1; /* 占满剩余空间，实现垂直居中 */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
     
     .instructions {
-      margin-bottom: 30px;
-      padding: 0 10px;
+      margin-bottom: 40px;
+      padding: 0 15px;
     }
     
     .instruction-item {
       color: #1a56db;
-      font-size: 16px;
-      margin-bottom: 15px;
+      font-size: 18px;
+      margin-bottom: 20px;
       text-align: left;
-      padding-left: 25px;
+      padding-left: 30px;
       position: relative;
+      line-height: 1.5;
     }
     
     .instruction-item:before {
@@ -99,15 +109,16 @@
       left: 0;
       top: 50%;
       transform: translateY(-50%);
-      width: 18px;
-      height: 18px;
+      width: 22px;
+      height: 22px;
       background-color: #1a56db;
       color: white;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
+      font-size: 14px;
+      font-weight: 500;
     }
     
     .instruction-item:nth-child(1):before {
@@ -118,76 +129,61 @@
       content: "2";
     }
 
-    /* 链接区域 */
+    /* 链接区域：突出显示 */
     .url-container {
       background-color: #f5f7fa;
-      border-radius: 8px;
-      padding: 15px;
-      margin-bottom: 20px;
+      border-radius: 10px;
+      padding: 18px;
+      margin: 0 15px 30px;
       position: relative;
       word-break: break-all;
-      font-size: 14px;
-      color: #666;
+      font-size: 15px;
+      color: #333;
+      border: 1px solid #e5e9f2;
     }
     
     .url-hint {
-      color: #999;
-      font-size: 13px;
+      color: #888;
+      font-size: 14px;
       margin-top: 10px;
-      margin-bottom: 25px;
+      margin-bottom: 35px;
+      padding: 0 15px;
     }
 
-    /* 按钮样式 */
+    /* 按钮样式：增强交互 */
     .copy-btn {
       background-color: #1a56db;
       color: white;
       border: none;
-      border-radius: 8px;
-      padding: 12px 0;
-      font-size: 16px;
+      border-radius: 10px;
+      padding: 14px 0;
+      font-size: 17px;
       font-weight: 500;
       cursor: pointer;
       width: 100%;
-      max-width: 300px;
+      max-width: 350px;
       margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      transition: background-color 0.3s;
+      gap: 10px;
+      transition: background-color 0.3s, transform 0.2s;
+      box-shadow: 0 4px 12px rgba(26, 86, 219, 0.2);
     }
     
     .copy-btn:hover {
       background-color: #1547b3;
-    }
-
-    /* 复制成功提示 */
-    .toast {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: rgba(0, 0, 0, 0.8);
-      color: white;
-      padding: 12px 20px;
-      border-radius: 8px;
-      font-size: 15px;
-      z-index: 1000;
-      display: none;
-      animation: fadeInOut 2s;
+      transform: translateY(-2px);
     }
     
-    @keyframes fadeInOut {
-      0% { opacity: 0; }
-      20% { opacity: 1; }
-      80% { opacity: 1; }
-      100% { opacity: 0; }
+    .copy-btn:active {
+      transform: translateY(0);
     }
 
-    /* 三点加载动画样式 */
+    /* 三点加载动画：居中显示 */
     .container {
-      width: 100px;
-      height: 100px;
+      width: 120px;
+      height: 120px;
       position: absolute;
       top: 50%;
       left: 50%;
@@ -197,8 +193,8 @@
     }
 
     .dot {
-      width: 15px;
-      height: 15px;
+      width: 18px;
+      height: 18px;
       border-radius: 50%;
       background-color: #000;
       position: absolute;
@@ -215,25 +211,25 @@
 
     @keyframes dot-3-move {
       20% { transform: scale(1) }
-      45% { transform: translateY(-18px) scale(.45) }
-      60% { transform: translateY(-25px) scale(.45) }
-      80% { transform: translateY(-25px) scale(.45) }
+      45% { transform: translateY(-22px) scale(.5) }
+      60% { transform: translateY(-28px) scale(.5) }
+      80% { transform: translateY(-28px) scale(.5) }
       100% { transform: translateY(0px) scale(1) }
     }
 
     @keyframes dot-2-move {
       20% { transform: scale(1) }
-      45% { transform: translate(-16px, 12px) scale(.45) }
-      60% { transform: translate(-20px, 15px) scale(.45) }
-      80% { transform: translate(-20px, 15px) scale(.45) }
+      45% { transform: translate(-18px, 14px) scale(.5) }
+      60% { transform: translate(-22px, 18px) scale(.5) }
+      80% { transform: translate(-22px, 18px) scale(.5) }
       100% { transform: translateY(0px) scale(1) }
     }
 
     @keyframes dot-1-move {
       20% { transform: scale(1) }
-      45% { transform: translate(16px, 12px) scale(.45) }
-      60% { transform: translate(20px, 15px) scale(.45) }
-      80% { transform: translate(20px, 15px) scale(.45) }
+      45% { transform: translate(18px, 14px) scale(.5) }
+      60% { transform: translate(22px, 18px) scale(.5) }
+      80% { transform: translate(22px, 18px) scale(.5) }
       100% { transform: translateY(0px) scale(1) }
     }
 
@@ -243,26 +239,63 @@
       100% { transform: translate(-50%, -50%) rotate(360deg) }
     }
 
-    /* 错误提示样式 */
+    /* 错误提示：居中显示 */
     .error-message {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       text-align: center;
-      padding: 20px;
+      padding: 30px 20px;
+      width: 90%;
+      max-width: 400px;
       display: none;
     }
     
     .error-message h3 {
       color: #f74d75;
-      font-size: 18px;
-      margin-bottom: 10px;
+      font-size: 22px;
+      margin-bottom: 15px;
     }
     
     .error-message p {
       color: #666;
-      font-size: 14px;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* 复制成功提示：优化显示 */
+    .toast {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.85);
+      color: white;
+      padding: 15px 25px;
+      border-radius: 10px;
+      font-size: 17px;
+      z-index: 10002;
+      display: none;
+      animation: fadeInOut 2s;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    }
+    
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+      20% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+    }
+
+    /* 支付宝特殊适配：隐藏多余元素（支付宝内导航栏较特殊） */
+    .is-alipay .guide-arrow {
+      right: 25px; /* 适配支付宝右侧间距 */
+    }
+
+    /* 加载中隐藏主内容 */
+    #mainContent, #errorMessage {
+      display: none;
     }
   </style>
   <!-- 引入Font Awesome图标库 -->
@@ -277,7 +310,7 @@
   </div>
   
   <!-- 主内容区 (初始隐藏) -->
-  <div id="mainContent" style="display: none;">
+  <div id="mainContent">
     <!-- 顶部提示栏 -->
     <div class="top-bar">
       <h1>点击右上角···在浏览器打开</h1>
@@ -294,18 +327,18 @@
     <!-- 主要内容 -->
     <div class="content">
       <div class="instructions">
-        <div class="instruction-item">本站不支持微信或QQ内访问</div>
-        <div class="instruction-item">请按提示在手机浏览器打开</div>
+        <div class="instruction-item">当前应用（微信/QQ/支付宝）不支持访问</div>
+        <div class="instruction-item">请按提示在手机浏览器打开以正常使用</div>
       </div>
       
       <div class="url-container" id="urlContainer">
         <!-- 链接将在这里显示 -->
       </div>
       
-      <div class="url-hint">点击右上角···或复制网址自行打开</div>
+      <div class="url-hint">点击右上角「···」选择浏览器打开，或复制网址手动打开</div>
       
       <button class="copy-btn" id="copyBtn">
-        <i class="fas fa-link"></i> 点此复制本站网址
+        <i class="fas fa-link"></i> 复制本站网址
       </button>
     </div>
   </div>
@@ -313,29 +346,48 @@
   <!-- 错误提示 -->
   <div class="error-message" id="errorMessage">
     <h3>加载失败</h3>
-    <p id="errorDetails">链接不存在</p>
+    <p id="errorDetails">链接不存在或已失效</p>
   </div>
   
   <!-- 复制成功提示 -->
   <div class="toast" id="toast">
-    链接已复制
+    链接已复制，可粘贴到浏览器打开
   </div>
 
   <script>
     // 存储目标URL
     let targetUrl = null;
+    // 环境检测结果
+    let env = {};
     
-    // 检测是否在微信、QQ等应用内打开
+    // 1. 环境检测：精准识别微信/QQ/支付宝
     function detectAppEnvironment() {
       const userAgent = navigator.userAgent.toLowerCase();
-      return {
+      const result = {
         isWeChat: /micromessenger/.test(userAgent),
-        isQQ: /qq\//.test(userAgent) && !/mqqbrowser/.test(userAgent),
-        isInApp: /micromessenger/.test(userAgent) || (/qq\//.test(userAgent) && !/mqqbrowser/.test(userAgent))
+        isQQ: /qq\//.test(userAgent) && !/mqqbrowser/.test(userAgent), // 排除QQ浏览器
+        isAlipay: /alipayclient/.test(userAgent),
+        isInApp: false, // 是否在「需要引导」的应用内
+        isBrowser: false // 是否在浏览器内
       };
+      
+      // 标记「需要引导」的应用（微信/QQ/支付宝）
+      result.isInApp = result.isWeChat || result.isQQ || result.isAlipay;
+      // 标记浏览器环境（排除上述应用）
+      result.isBrowser = !result.isInApp && 
+                        (/(mqqbrowser|ucbrowser|chrome|safari|firefox|edge)/.test(userAgent) || 
+                        window.navigator.userAgent.indexOf('MSIE') !== -1 || 
+                        window.navigator.userAgent.indexOf('Trident') !== -1);
+      
+      // 支付宝环境添加特殊样式类
+      if (result.isAlipay) {
+        document.body.classList.add('is-alipay');
+      }
+      
+      return result;
     }
     
-    // 显示提示消息
+    // 2. 显示提示消息
     function showToast(message) {
       const toast = document.getElementById('toast');
       toast.textContent = message;
@@ -343,68 +395,55 @@
       
       setTimeout(() => {
         toast.style.display = 'none';
-      }, 2000);
+      }, 2500);
     }
     
-    // 复制链接到剪贴板
+    // 3. 复制链接到剪贴板（双方案兼容）
     function copyToClipboard() {
       if (!targetUrl) return;
       
-      navigator.clipboard.writeText(targetUrl)
-        .then(() => {
-          showToast('链接已复制');
-        })
-        .catch(err => {
-          console.error('无法复制内容: ', err);
-          // 备用方法
-          const textarea = document.createElement('textarea');
-          textarea.value = targetUrl;
-          document.body.appendChild(textarea);
-          textarea.select();
-          document.execCommand('copy');
-          document.body.removeChild(textarea);
-          showToast('链接已复制');
-        });
+      // 方案1：现代浏览器API
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(targetUrl)
+          .then(() => showToast('链接已复制，可粘贴到浏览器打开'))
+          .catch(() => fallbackCopy()); // 失败则用备用方案
+      } else {
+        // 方案2：兼容旧浏览器（创建临时文本框）
+        fallbackCopy();
+      }
     }
     
-    // 处理URL参数，获取key
-    const params = new URLSearchParams(window.location.search);
-    const key = params.get('key');
-    const apiUrl = 'https://fh.qsjie.top/api/keyapi.php'; // 原API地址
+    // 备用复制方案
+    function fallbackCopy() {
+      const textarea = document.createElement('textarea');
+      textarea.value = targetUrl;
+      textarea.style.position = 'fixed'; // 避免滚动影响
+      textarea.style.opacity = '0'; // 隐藏元素
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy'); // 旧API
+      document.body.removeChild(textarea);
+      showToast('链接已复制，可粘贴到浏览器打开');
+    }
     
-    // 检查是否有有效的key
-    if (key) {
-      // 从API获取密钥对应的编码
-      fetch(apiUrl + '?key=' + encodeURIComponent(key))
+    // 4. 从API获取目标链接
+    function fetchTargetUrl(key) {
+      const apiUrl = 'https://fh.qsjie.top/api/keyapi.php'; // 原API地址
+      
+      fetch(`${apiUrl}?key=${encodeURIComponent(key)}`)
         .then(response => {
-          if (!response.ok) {
-            throw new Error('网络响应不正常');
-          }
+          if (!response.ok) throw new Error(`HTTP错误：${response.status}`);
           return response.json();
         })
         .then(data => {
           if (data.success && data.encoded_url) {
-            // 解码URL
+            // 解码URL（base64）
             targetUrl = atob(data.encoded_url);
-            
-            // 验证URL有效性（确保是http/https链接）
-            if (targetUrl.startsWith("http://") || targetUrl.startsWith("https://")) {
-              // 隐藏加载动画，显示主内容
-              document.getElementById("container").style.display = "none";
-              document.getElementById("mainContent").style.display = "block";
-              
-              // 显示URL
-              document.getElementById("urlContainer").textContent = targetUrl;
-              
-              // 自动复制链接
-              setTimeout(copyToClipboard, 1000);
-              
-              // 绑定复制按钮事件
-              document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
-              
-              console.log('目标链接:', targetUrl);
+            // 验证URL有效性（必须是http/https）
+            if (targetUrl.startsWith('http://') || targetUrl.startsWith('https://')) {
+              handleUrlSuccess(); // 处理成功逻辑
             } else {
-              showError('无效的链接地址（需以http/https开头）');
+              showError('无效的链接（需以http/https开头）');
             }
           } else {
             showError(data.message || '未找到对应的链接');
@@ -412,18 +451,65 @@
         })
         .catch(error => {
           console.error('获取链接失败:', error);
-          showError('获取链接失败: ' + error.message);
+          showError(`网络错误：${error.message}`);
         });
-    } else {
-      showError('禁止滥用');
     }
     
-    // 显示错误信息
-    function showError(message) {
-      document.getElementById("container").style.display = "none";
-      document.getElementById("errorDetails").textContent = message;
-      document.getElementById("errorMessage").style.display = "block";
+    // 5. URL获取成功后的处理逻辑
+    function handleUrlSuccess() {
+      // 隐藏加载动画
+      document.getElementById('container').style.display = 'none';
+      
+      // 分支1：浏览器环境 → 自动跳转（延迟1秒，避免加载过快）
+      if (env.isBrowser) {
+        showToast(`即将跳转到目标页面...`);
+        setTimeout(() => {
+          window.location.href = targetUrl;
+        }, 1000);
+      } 
+      // 分支2：应用内环境 → 显示引导页
+      else if (env.isInApp) {
+        document.getElementById('mainContent').style.display = 'block';
+        // 显示URL
+        document.getElementById('urlContainer').textContent = targetUrl;
+        // 自动复制（提升用户体验）
+        setTimeout(copyToClipboard, 1200);
+        // 绑定复制按钮事件
+        document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
+      }
+      // 分支3：未知环境 → 显示链接+复制按钮
+      else {
+        document.getElementById('mainContent').style.display = 'block';
+        document.getElementById('urlContainer').textContent = targetUrl;
+        document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
+      }
     }
+    
+    // 6. 显示错误信息
+    function showError(message) {
+      document.getElementById('container').style.display = 'none';
+      document.getElementById('errorDetails').textContent = message;
+      document.getElementById('errorMessage').style.display = 'block';
+    }
+    
+    // 7. 初始化入口
+    function init() {
+      // 先检测环境
+      env = detectAppEnvironment();
+      // 获取URL参数中的key
+      const params = new URLSearchParams(window.location.search);
+      const key = params.get('key');
+      
+      // 检查是否有key
+      if (key) {
+        fetchTargetUrl(key); // 有key → 拉取链接
+      } else {
+        showError('禁止滥用：缺少必要的key参数');
+      }
+    }
+    
+    // 启动初始化
+    window.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
 </html>
