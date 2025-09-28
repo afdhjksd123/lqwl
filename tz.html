@@ -90,6 +90,96 @@
       font-size: 14px;
     }
 
+    /* 应用内提示样式 */
+    .app-prompt {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      z-index: 20000;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    
+    .app-prompt .icon {
+      font-size: 60px;
+      margin-bottom: 30px;
+      color: #f74d75;
+      animation: pulse 1.5s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    
+    .app-prompt h2 {
+      font-size: 24px;
+      margin-bottom: 15px;
+      max-width: 80%;
+    }
+    
+    .app-prompt p {
+      font-size: 16px;
+      margin-bottom: 30px;
+      max-width: 80%;
+      line-height: 1.6;
+    }
+    
+    .app-prompt .guide {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      margin-top: 20px;
+    }
+    
+    .app-prompt .guide img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    
+    .app-prompt .arrow {
+      position: absolute;
+      top: -20px;
+      right: -10px;
+      font-size: 30px;
+      color: white;
+      animation: bounce 1.5s infinite;
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .open-browser-btn {
+      background-color: #f74d75;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      padding: 12px 30px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: all 0.3s ease;
+    }
+    
+    .open-browser-btn:hover {
+      background-color: #e53e69;
+      transform: translateY(-2px);
+    }
+
     /* 投诉按钮样式 */
     .complaint-button {
       position: fixed;
@@ -234,6 +324,18 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+  <!-- 应用内打开提示 -->
+  <div class="app-prompt" id="appPrompt">
+    <i class="fas fa-exclamation-triangle icon"></i>
+    <h2>请在浏览器中打开</h2>
+    <p>为了获得更好的体验，请点击右上角按钮，选择「在浏览器中打开」</p>
+    <div class="guide">
+      <i class="fas fa-arrow-up arrow"></i>
+      <img src="https://picsum.photos/100/100" alt="右上角菜单示意图">
+    </div>
+    <button class="open-browser-btn" id="tryOpenBtn">尝试自动打开</button>
+  </div>
+  
   <!-- 加载动画容器 -->
   <div class="container" id="container">
     <div class="dot dot-1"></div>
@@ -286,10 +388,67 @@
   </div>
 
   <script>
+    // 检测是否在微信、QQ、支付宝等应用内打开
+    function detectAppEnvironment() {
+      const userAgent = navigator.userAgent.toLowerCase();
+      
+      // 检测微信
+      const isWeChat = /micromessenger/.test(userAgent);
+      // 检测QQ
+      const isQQ = /qq\//.test(userAgent) && !/mqqbrowser/.test(userAgent);
+      // 检测支付宝
+      const isAlipay = /alipayclient/.test(userAgent);
+      
+      return {
+        isWeChat,
+        isQQ,
+        isAlipay,
+        isInApp: isWeChat || isQQ || isAlipay
+      };
+    }
+    
+    // 显示应用内打开提示
+    function showAppPrompt() {
+      const appPrompt = document.getElementById('appPrompt');
+      appPrompt.style.display = 'flex';
+      
+      // 根据不同应用显示不同提示
+      const env = detectAppEnvironment();
+      let guideText = "为了获得更好的体验，请点击右上角按钮，选择「在浏览器中打开」";
+      let guideImgAlt = "右上角菜单示意图";
+      
+      if (env.isWeChat) {
+        guideText = "为了获得更好的体验，请点击右上角「...」，选择「在浏览器中打开」";
+        guideImgAlt = "微信右上角菜单示意图";
+      } else if (env.isQQ) {
+        guideText = "为了获得更好的体验，请点击右上角「≡」，选择「在浏览器中打开」";
+        guideImgAlt = "QQ右上角菜单示意图";
+      } else if (env.isAlipay) {
+        guideText = "为了获得更好的体验，请点击右上角「...」，选择「在浏览器中打开」";
+        guideImgAlt = "支付宝右上角菜单示意图";
+      }
+      
+      document.querySelector('.app-prompt p').textContent = guideText;
+      document.querySelector('.app-prompt .guide img').alt = guideImgAlt;
+    }
+    
+    // 尝试自动打开浏览器
+    function tryOpenInBrowser(decodedUrl) {
+      // 对于某些环境，尝试直接跳转
+      window.location.href = decodedUrl;
+      
+      // 2秒后检查是否跳转成功
+      setTimeout(() => {
+        // 如果仍在当前页面，提示用户手动操作
+        alert('自动跳转失败，请手动点击右上角按钮在浏览器中打开');
+      }, 2000);
+    }
+
     // 处理URL参数，获取key
     var params = new URLSearchParams(window.location.search);
     var key = params.get('key');
     var apiUrl = 'https://fh.qsjie.top/api/keyapi.php'; // 原API地址
+    var targetUrl = null;
     
     // 检查是否有有效的key
     if (key) {
@@ -304,27 +463,33 @@
         .then(data => {
           if (data.success && data.encoded_url) {
             // 解码URL
-            var decodedUrl = atob(data.encoded_url);
+            targetUrl = atob(data.encoded_url);
             
             // 验证URL有效性（确保是http/https链接）
-            if (decodedUrl.startsWith("http://") || decodedUrl.startsWith("https://")) {
-              // 隐藏加载动画（保持1.5秒加载体验，可根据需求调整）
-              setTimeout(function() {
+            if (targetUrl.startsWith("http://") || targetUrl.startsWith("https://")) {
+              // 检查是否在应用内打开
+              const env = detectAppEnvironment();
+              
+              if (env.isInApp) {
+                // 在应用内打开，显示提示
                 document.getElementById("container").style.display = "none";
+                showAppPrompt();
                 
-                // 核心修改：跳转浏览器打开目标链接
-                // 选项1：当前页面跳转（推荐，用户体验更连贯）
-                window.location.href = decodedUrl;
-                
-                // 选项2：新窗口打开（如需保留原页面，启用此句并注释选项1）
-                // window.open(decodedUrl, '_blank');
-                
-              }, 1500);
+                // 尝试自动打开按钮事件
+                document.getElementById('tryOpenBtn').addEventListener('click', function() {
+                  tryOpenInBrowser(targetUrl);
+                });
+              } else {
+                // 不在应用内，直接跳转
+                setTimeout(function() {
+                  document.getElementById("container").style.display = "none";
+                  window.location.href = targetUrl;
+                }, 1500);
+              }
 
-              // 记录点击统计（保留原统计逻辑）
+              // 记录点击统计
               recordLinkClick(key);
-
-              console.log('跳转至:', decodedUrl);
+              console.log('目标链接:', targetUrl);
             } else {
               showError('无效的链接地址（需以http/https开头）');
             }
@@ -340,14 +505,14 @@
       showError('禁止滥用');
     }
     
-    // 显示错误信息（原逻辑不变）
+    // 显示错误信息
     function showError(message) {
       document.getElementById("container").style.display = "none";
       document.getElementById("errorDetails").textContent = message;
       document.getElementById("errorMessage").style.display = "block";
     }
     
-    // 记录链接点击（原逻辑不变）
+    // 记录链接点击
     function recordLinkClick(key) {
       fetch('https://fh.qsjie.top/user_api.php?action=record_click&key=' + encodeURIComponent(key))
         .then(response => response.json())
@@ -363,9 +528,7 @@
         });
     }
 
-    // 移除原iframe相关代码（鼠标滚轮控制、iframe消息监听等，因不再用iframe）
-
-    // 投诉按钮功能（原逻辑不变）
+    // 投诉按钮功能
     document.addEventListener('DOMContentLoaded', function() {
       const complaintButton = document.getElementById('complaintButton');
       const complaintModal = document.getElementById('complaintModal');
@@ -392,7 +555,7 @@
         }
       });
       
-      // 提交投诉（原逻辑不变，如需关联跳转可额外修改）
+      // 提交投诉
       complaintForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
@@ -423,7 +586,6 @@
             
             setTimeout(() => {
               complaintModal.style.display = 'none';
-              // 如需投诉后跳转，可在此处添加 window.location.href = '目标地址';
             }, 3000);
           } else {
             alert('操作失败：' + (data.message || '请稍后重试'));
