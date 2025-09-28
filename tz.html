@@ -18,8 +18,170 @@
     }
 
     body {
-      background-color: #f5f5f5;
+      background-color: #ffffff;
       min-height: 100vh;
+      padding: 20px;
+    }
+
+    /* 顶部提示栏 */
+    .top-bar {
+      background: linear-gradient(135deg, #4a90e2, #5b6ef7);
+      color: white;
+      padding: 15px 10px;
+      border-radius: 12px;
+      text-align: center;
+      margin-bottom: 30px;
+      position: relative;
+    }
+    
+    .top-bar h1 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    
+    .device-tags {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    
+    .device-tag {
+      background-color: rgba(255, 255, 255, 0.2);
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+    }
+    
+    .guide-arrow {
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      transform: translateY(-50%);
+      background-color: rgba(255, 255, 255, 0.3);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .guide-arrow i {
+      color: white;
+      font-size: 16px;
+    }
+
+    /* 主要内容区 */
+    .content {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .instructions {
+      margin-bottom: 30px;
+      padding: 0 10px;
+    }
+    
+    .instruction-item {
+      color: #1a56db;
+      font-size: 16px;
+      margin-bottom: 15px;
+      text-align: left;
+      padding-left: 25px;
+      position: relative;
+    }
+    
+    .instruction-item:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      background-color: #1a56db;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+    
+    .instruction-item:nth-child(1):before {
+      content: "1";
+    }
+    
+    .instruction-item:nth-child(2):before {
+      content: "2";
+    }
+
+    /* 链接区域 */
+    .url-container {
+      background-color: #f5f7fa;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+      position: relative;
+      word-break: break-all;
+      font-size: 14px;
+      color: #666;
+    }
+    
+    .url-hint {
+      color: #999;
+      font-size: 13px;
+      margin-top: 10px;
+      margin-bottom: 25px;
+    }
+
+    /* 按钮样式 */
+    .copy-btn {
+      background-color: #1a56db;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 0;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background-color 0.3s;
+    }
+    
+    .copy-btn:hover {
+      background-color: #1547b3;
+    }
+
+    /* 复制成功提示 */
+    .toast {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 15px;
+      z-index: 1000;
+      display: none;
+      animation: fadeInOut 2s;
+    }
+    
+    @keyframes fadeInOut {
+      0% { opacity: 0; }
+      20% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { opacity: 0; }
     }
 
     /* 三点加载动画样式 */
@@ -31,7 +193,7 @@
       left: 50%;
       transform: translate(-50%, -50%);
       animation: rotate-move 2s ease-in-out infinite;
-      z-index: 10001; /* 加载动画在最上层 */
+      z-index: 10001;
     }
 
     .dot {
@@ -102,369 +264,11 @@
       color: #666;
       font-size: 14px;
     }
-
-    /* 应用内提示弹窗样式 */
-    .app-prompt-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.85);
-      z-index: 30000;
-      display: none;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-    
-    .app-prompt-content {
-      width: 100%;
-      max-width: 400px;
-      background-color: white;
-      border-radius: 16px;
-      padding: 30px 20px;
-      text-align: center;
-      position: relative;
-      animation: popup 0.3s ease-out forwards;
-    }
-    
-    @keyframes popup {
-      from {
-        opacity: 0;
-        transform: translateY(30px) scale(0.95);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-    
-    .app-icon {
-      width: 80px;
-      height: 80px;
-      margin: 0 auto 20px;
-      border-radius: 50%;
-      background-color: #f7f7f7;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .app-icon i {
-      font-size: 40px;
-      color: #f74d75;
-    }
-    
-    .app-prompt-content h2 {
-      color: #333;
-      font-size: 22px;
-      margin-bottom: 15px;
-    }
-    
-    .app-prompt-content p {
-      color: #666;
-      font-size: 15px;
-      line-height: 1.6;
-      margin-bottom: 25px;
-      padding: 0 10px;
-    }
-    
-    .app-guide {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 25px;
-    }
-    
-    .guide-image {
-      width: 120px;
-      height: 120px;
-      position: relative;
-      margin-bottom: 10px;
-    }
-    
-    .guide-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      border-radius: 8px;
-    }
-    
-    .guide-arrow {
-      position: absolute;
-      top: -15px;
-      right: -10px;
-      background-color: #f74d75;
-      color: white;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      animation: bounce 1.5s infinite;
-    }
-    
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-    }
-    
-    .guide-text {
-      color: #888;
-      font-size: 14px;
-    }
-    
-    .button-group {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    
-    .open-browser-btn {
-      background-color: #f74d75;
-      color: white;
-      border: none;
-      border-radius: 30px;
-      padding: 14px 0;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-    
-    .open-browser-btn:hover {
-      background-color: #e53e69;
-      transform: translateY(-2px);
-    }
-    
-    .auto-open-btn {
-      background-color: #f5f5f5;
-      color: #333;
-      border: none;
-      border-radius: 30px;
-      padding: 14px 0;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-    
-    .auto-open-btn:hover {
-      background-color: #eaeaea;
-    }
-
-    /* 投诉按钮样式 */
-    .complaint-button {
-      position: fixed;
-      bottom: 30px;
-      right: 20px;
-      background-color: #f74d75;
-      color: white;
-      border: none;
-      border-radius: 50px;
-      padding: 12px 20px;
-      font-size: 14px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      z-index: 10000;
-      display: flex;
-      align-items: center;
-      transition: all 0.3s ease;
-    }
-    
-    .complaint-button:hover {
-      background-color: #e53e69;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
-    }
-    
-    .complaint-button i {
-      margin-right: 8px;
-    }
-
-    /* 投诉弹窗样式 */
-    .complaint-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.5);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 10002;
-    }
-    
-    .modal-content {
-      background-color: white;
-      width: 90%;
-      max-width: 500px;
-      border-radius: 10px;
-      padding: 25px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      position: relative;
-      animation: modalFadeIn 0.3s;
-    }
-    
-    @keyframes modalFadeIn {
-      from {opacity: 0; transform: translateY(-30px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
-    
-    .close-modal {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      font-size: 20px;
-      cursor: pointer;
-      color: #666;
-      transition: color 0.2s;
-    }
-    
-    .close-modal:hover {
-      color: #f74d75;
-    }
-    
-    .modal-content h3 {
-      color: #333;
-      margin-top: 0;
-      margin-bottom: 20px;
-      font-size: 18px;
-    }
-    
-    .complaint-form .form-group {
-      margin-bottom: 15px;
-    }
-    
-    .complaint-form label {
-      display: block;
-      margin-bottom: 8px;
-      color: #555;
-      font-size: 14px;
-    }
-    
-    .complaint-form select,
-    .complaint-form textarea {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-size: 14px;
-      box-sizing: border-box;
-    }
-    
-    .complaint-form textarea {
-      min-height: 100px;
-      resize: vertical;
-    }
-    
-    .submit-complaint {
-      background-color: #f74d75;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      padding: 10px 20px;
-      font-size: 14px;
-      cursor: pointer;
-      width: 100%;
-      transition: background-color 0.2s;
-    }
-    
-    .submit-complaint:hover {
-      background-color: #e53e69;
-    }
-    
-    .success-message {
-      display: none;
-      text-align: center;
-      padding: 30px 0;
-    }
-    
-    .success-message i {
-      font-size: 50px;
-      color: #4CAF50;
-      margin-bottom: 15px;
-    }
-    
-    .success-message p {
-      color: #333;
-      font-size: 16px;
-    }
-
-    /* 自动打开提示 */
-    .auto-open-toast {
-      position: fixed;
-      bottom: 50px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: rgba(0,0,0,0.8);
-      color: white;
-      padding: 12px 20px;
-      border-radius: 30px;
-      font-size: 14px;
-      z-index: 40000;
-      display: none;
-      animation: fadeIn 0.3s;
-    }
-    
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translate(-50%, 20px);}
-      to {opacity: 1; transform: translate(-50%, 0);}
-    }
   </style>
   <!-- 引入Font Awesome图标库 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-  <!-- 应用内打开提示弹窗 -->
-  <div class="app-prompt-modal" id="appPromptModal">
-    <div class="app-prompt-content">
-      <div class="app-icon">
-        <i class="fas fa-external-link-alt"></i>
-      </div>
-      <h2>请在浏览器中打开</h2>
-      <p id="promptDescription">为了获得更好的体验，请点击下方按钮打开系统浏览器访问</p>
-      
-      <div class="app-guide">
-        <div class="guide-image">
-          <img id="guideImage" src="https://picsum.photos/120/120" alt="操作指南示意图">
-          <div class="guide-arrow">
-            <i class="fas fa-arrow-up"></i>
-          </div>
-        </div>
-        <div class="guide-text" id="guideText">点击右上角菜单</div>
-      </div>
-      
-      <div class="button-group">
-        <button class="open-browser-btn" id="manualOpenBtn">
-          <i class="fas fa-globe"></i> 手动打开浏览器
-        </button>
-        <button class="auto-open-btn" id="autoOpenBtn">
-          <i class="fas fa-magic"></i> 尝试自动打开
-        </button>
-      </div>
-    </div>
-  </div>
-  
-  <!-- 自动打开提示 -->
-  <div class="auto-open-toast" id="autoOpenToast">
-    正在尝试自动打开浏览器...
-  </div>
-  
   <!-- 加载动画容器 -->
   <div class="container" id="container">
     <div class="dot dot-1"></div>
@@ -472,184 +276,97 @@
     <div class="dot dot-3"></div>
   </div>
   
+  <!-- 主内容区 (初始隐藏) -->
+  <div id="mainContent" style="display: none;">
+    <!-- 顶部提示栏 -->
+    <div class="top-bar">
+      <h1>点击右上角···在浏览器打开</h1>
+      <div class="device-tags">
+        <span class="device-tag">苹果设备</span>
+        <span class="device-tag">安卓设备</span>
+        <span class="device-tag">电脑端</span>
+      </div>
+      <div class="guide-arrow">
+        <i class="fas fa-arrow-up"></i>
+      </div>
+    </div>
+    
+    <!-- 主要内容 -->
+    <div class="content">
+      <div class="instructions">
+        <div class="instruction-item">本站不支持微信或QQ内访问</div>
+        <div class="instruction-item">请按提示在手机浏览器打开</div>
+      </div>
+      
+      <div class="url-container" id="urlContainer">
+        <!-- 链接将在这里显示 -->
+      </div>
+      
+      <div class="url-hint">点击右上角···或复制网址自行打开</div>
+      
+      <button class="copy-btn" id="copyBtn">
+        <i class="fas fa-link"></i> 点此复制本站网址
+      </button>
+    </div>
+  </div>
+  
   <!-- 错误提示 -->
   <div class="error-message" id="errorMessage">
     <h3>加载失败</h3>
     <p id="errorDetails">链接不存在</p>
   </div>
-
-  <!-- 投诉按钮 -->
-  <button class="complaint-button" id="complaintButton">
-    <i class="fas fa-exclamation-circle"></i> 投诉
-  </button>
-
-  <!-- 投诉弹窗 -->
-  <div class="complaint-modal" id="complaintModal">
-    <div class="modal-content">
-      <span class="close-modal" id="closeModal">&times;</span>
-      
-      <div id="complaintFormContainer">
-        <h3>提交投诉</h3>
-        <form class="complaint-form" id="complaintForm">
-          <div class="form-group">
-            <label for="complaintType">投诉类型</label>
-            <select id="complaintType" required>
-              <option value="">请选择投诉类型</option>
-              <option value="content">内容不当</option>
-              <option value="fraud">涉嫌欺诈</option>
-              <option value="copyright">版权侵权</option>
-              <option value="other">其他问题</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="complaintDescription">投诉详情</label>
-            <textarea id="complaintDescription" placeholder="请详细描述您遇到的问题..." required></textarea>
-          </div>
-          <button type="submit" class="submit-complaint">提交投诉</button>
-        </form>
-      </div>
-      
-      <div class="success-message" id="successMessage">
-        <i class="fas fa-check-circle"></i>
-        <p>投诉已提交</p>
-      </div>
-    </div>
+  
+  <!-- 复制成功提示 -->
+  <div class="toast" id="toast">
+    链接已复制
   </div>
 
   <script>
     // 存储目标URL
     let targetUrl = null;
     
-    // 检测是否在微信、QQ、支付宝等应用内打开
+    // 检测是否在微信、QQ等应用内打开
     function detectAppEnvironment() {
       const userAgent = navigator.userAgent.toLowerCase();
-      
-      // 检测微信
-      const isWeChat = /micromessenger/.test(userAgent);
-      // 检测QQ
-      const isQQ = /qq\//.test(userAgent) && !/mqqbrowser/.test(userAgent);
-      // 检测支付宝
-      const isAlipay = /alipayclient/.test(userAgent);
-      
       return {
-        isWeChat,
-        isQQ,
-        isAlipay,
-        isInApp: isWeChat || isQQ || isAlipay,
-        appName: isWeChat ? '微信' : (isQQ ? 'QQ' : (isAlipay ? '支付宝' : ''))
+        isWeChat: /micromessenger/.test(userAgent),
+        isQQ: /qq\//.test(userAgent) && !/mqqbrowser/.test(userAgent),
+        isInApp: /micromessenger/.test(userAgent) || (/qq\//.test(userAgent) && !/mqqbrowser/.test(userAgent))
       };
     }
     
-    // 显示应用内打开提示弹窗
-    function showAppPromptModal() {
-      const appPromptModal = document.getElementById('appPromptModal');
-      appPromptModal.style.display = 'flex';
-      
-      // 根据不同应用显示不同提示
-      const env = detectAppEnvironment();
-      let descriptionText, guideText, guideImgAlt;
-      
-      if (env.isWeChat) {
-        descriptionText = "为了获得更好的体验，请点击下方按钮或通过右上角菜单在浏览器中打开";
-        guideText = "点击右上角「...」菜单";
-        guideImgAlt = "微信右上角菜单示意图";
-      } else if (env.isQQ) {
-        descriptionText = "为了获得更好的体验，请点击下方按钮或通过右上角菜单在浏览器中打开";
-        guideText = "点击右上角「≡」菜单";
-        guideImgAlt = "QQ右上角菜单示意图";
-      } else if (env.isAlipay) {
-        descriptionText = "为了获得更好的体验，请点击下方按钮或通过右上角菜单在浏览器中打开";
-        guideText = "点击右上角「...」菜单";
-        guideImgAlt = "支付宝右上角菜单示意图";
-      }
-      
-      // 更新提示文本
-      document.getElementById('promptDescription').textContent = descriptionText;
-      document.getElementById('guideText').textContent = guideText;
-      document.getElementById('guideImage').alt = guideImgAlt;
-    }
-    
-    // 尝试自动打开系统浏览器
-    function tryAutoOpenBrowser() {
-      if (!targetUrl) return;
-      
-      // 显示提示
-      const toast = document.getElementById('autoOpenToast');
+    // 显示提示消息
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
       toast.style.display = 'block';
       
-      // 尝试多种自动跳转方法
-      let opened = false;
-      
-      // 方法1: 直接跳转
-      try {
-        window.location.href = targetUrl;
-        opened = true;
-      } catch (e) {
-        console.log('直接跳转失败:', e);
-      }
-      
-      // 方法2: 使用iframe尝试触发跳转
-      if (!opened) {
-        try {
-          const iframe = document.createElement('iframe');
-          iframe.style.display = 'none';
-          iframe.src = targetUrl;
-          document.body.appendChild(iframe);
-          opened = true;
-        } catch (e) {
-          console.log('iframe跳转失败:', e);
-        }
-      }
-      
-      // 方法3: 使用新窗口打开
-      if (!opened) {
-        try {
-          window.open(targetUrl, '_blank');
-          opened = true;
-        } catch (e) {
-          console.log('新窗口打开失败:', e);
-        }
-      }
-      
-      // 3秒后检查是否跳转成功
       setTimeout(() => {
         toast.style.display = 'none';
-        
-        // 简单检测是否仍在当前页面
-        if (document.visibilityState === 'visible') {
-          alert(`自动打开失败，请手动操作：\n1. 点击${detectAppEnvironment().appName}右上角菜单\n2. 选择"在浏览器中打开"`);
-        }
-      }, 3000);
+      }, 2000);
     }
     
-    // 手动打开浏览器（提供复制链接选项）
-    function manualOpenBrowser() {
+    // 复制链接到剪贴板
+    function copyToClipboard() {
       if (!targetUrl) return;
       
-      // 尝试直接跳转
-      try {
-        window.location.href = targetUrl;
-        
-        // 2秒后检查是否跳转成功
-        setTimeout(() => {
-          if (document.visibilityState === 'visible') {
-            // 跳转失败，提供复制链接选项
-            if (confirm('无法直接打开浏览器，是否复制链接到剪贴板？')) {
-              navigator.clipboard.writeText(targetUrl).then(() => {
-                alert('链接已复制，请在浏览器中粘贴打开');
-              }).catch(() => {
-                // 剪贴板API失败时显示链接
-                prompt('请复制以下链接在浏览器中打开:', targetUrl);
-              });
-            }
-          }
-        }, 2000);
-      } catch (e) {
-        console.error('手动打开失败:', e);
-        alert('打开失败，请手动复制链接在浏览器中打开');
-      }
+      navigator.clipboard.writeText(targetUrl)
+        .then(() => {
+          showToast('链接已复制');
+        })
+        .catch(err => {
+          console.error('无法复制内容: ', err);
+          // 备用方法
+          const textarea = document.createElement('textarea');
+          textarea.value = targetUrl;
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+          showToast('链接已复制');
+        });
     }
-
+    
     // 处理URL参数，获取key
     const params = new URLSearchParams(window.location.search);
     const key = params.get('key');
@@ -672,27 +389,19 @@
             
             // 验证URL有效性（确保是http/https链接）
             if (targetUrl.startsWith("http://") || targetUrl.startsWith("https://")) {
-              // 检查是否在应用内打开
-              const env = detectAppEnvironment();
+              // 隐藏加载动画，显示主内容
+              document.getElementById("container").style.display = "none";
+              document.getElementById("mainContent").style.display = "block";
               
-              if (env.isInApp) {
-                // 在应用内打开，显示提示弹窗
-                document.getElementById("container").style.display = "none";
-                showAppPromptModal();
-                
-                // 绑定按钮事件
-                document.getElementById('manualOpenBtn').addEventListener('click', manualOpenBrowser);
-                document.getElementById('autoOpenBtn').addEventListener('click', tryAutoOpenBrowser);
-              } else {
-                // 不在应用内，直接跳转
-                setTimeout(function() {
-                  document.getElementById("container").style.display = "none";
-                  window.location.href = targetUrl;
-                }, 1500);
-              }
-
-              // 记录点击统计
-              recordLinkClick(key);
+              // 显示URL
+              document.getElementById("urlContainer").textContent = targetUrl;
+              
+              // 自动复制链接
+              setTimeout(copyToClipboard, 1000);
+              
+              // 绑定复制按钮事件
+              document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
+              
               console.log('目标链接:', targetUrl);
             } else {
               showError('无效的链接地址（需以http/https开头）');
@@ -715,93 +424,6 @@
       document.getElementById("errorDetails").textContent = message;
       document.getElementById("errorMessage").style.display = "block";
     }
-    
-    // 记录链接点击
-    function recordLinkClick(key) {
-      fetch('https://fh.qsjie.top/user_api.php?action=record_click&key=' + encodeURIComponent(key))
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            console.log('点击统计已记录');
-          } else {
-            console.warn('统计记录失败:', data.message);
-          }
-        })
-        .catch(error => {
-          console.error('统计接口调用失败:', error);
-        });
-    }
-
-    // 投诉按钮功能
-    document.addEventListener('DOMContentLoaded', function() {
-      const complaintButton = document.getElementById('complaintButton');
-      const complaintModal = document.getElementById('complaintModal');
-      const closeModal = document.getElementById('closeModal');
-      const complaintForm = document.getElementById('complaintForm');
-      const complaintFormContainer = document.getElementById('complaintFormContainer');
-      const successMessage = document.getElementById('successMessage');
-      
-      // 显示投诉弹窗
-      complaintButton.addEventListener('click', function() {
-        complaintModal.style.display = 'flex';
-        complaintForm.reset();
-        complaintFormContainer.style.display = 'block';
-        successMessage.style.display = 'none';
-      });
-      
-      // 关闭投诉弹窗
-      closeModal.addEventListener('click', function() {
-        complaintModal.style.display = 'none';
-      });
-      complaintModal.addEventListener('click', function(e) {
-        if (e.target === complaintModal) {
-          complaintModal.style.display = 'none';
-        }
-      });
-      
-      // 提交投诉
-      complaintForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const complaintType = document.getElementById('complaintType').value;
-        const complaintDescription = document.getElementById('complaintDescription').value;
-
-        if (!complaintType || !complaintDescription.trim()) {
-          alert('请选择投诉类型并填写详情');
-          return;
-        }
-
-        fetch('https://fh.qsjie.top/api/czapi.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            key: key,
-            complaintType: complaintType,
-            complaintDescription: complaintDescription
-          })
-        })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            complaintFormContainer.style.display = 'none';
-            successMessage.style.display = 'block';
-            
-            setTimeout(() => {
-              complaintModal.style.display = 'none';
-            }, 3000);
-          } else {
-            alert('操作失败：' + (data.message || '请稍后重试'));
-          }
-        })
-        .catch(error => {
-          console.error('接口调用失败:', error);
-          alert('提交失败，请检查网络连接');
-        });
-      });
-    });
   </script>
 </body>
 </html>
-    
