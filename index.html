@@ -257,43 +257,6 @@
     <p id="errorDetails">链接不存在</p>
   </div>
 
-  <!-- 投诉按钮 -->
-  <button class="complaint-button" id="complaintButton">
-    <i class="fas fa-exclamation-circle"></i> 投诉
-  </button>
-
-  <!-- 投诉弹窗 -->
-  <div class="complaint-modal" id="complaintModal">
-    <div class="modal-content">
-      <span class="close-modal" id="closeModal">&times;</span>
-      
-      <div id="complaintFormContainer">
-        <h3>提交投诉</h3>
-        <form class="complaint-form" id="complaintForm">
-          <div class="form-group">
-            <label for="complaintType">投诉类型</label>
-            <select id="complaintType" required>
-              <option value="">请选择投诉类型</option>
-              <option value="content">内容不当</option>
-              <option value="fraud">涉嫌欺诈</option>
-              <option value="copyright">版权侵权</option>
-              <option value="other">其他问题</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="complaintDescription">投诉详情</label>
-            <textarea id="complaintDescription" placeholder="请详细描述您遇到的问题..." required></textarea>
-          </div>
-          <button type="submit" class="submit-complaint">提交投诉</button>
-        </form>
-      </div>
-      
-      <div class="success-message" id="successMessage">
-        <i class="fas fa-check-circle"></i>
-        <p>投诉已提交</p>
-      </div>
-    </div>
-  </div>
 
   <script>
     // 处理URL参数，获取key
